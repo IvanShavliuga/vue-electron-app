@@ -1,130 +1,157 @@
 <template>
-  <div class="home">
-    <div class="edit__form" v-if="!modalShow">
-      <h1 class="home__title">Список заметок</h1>
-      <div class = "form__panel">
-        <button class="form__button button__cancel"
-          title="Отменить изменения"
-          @click="undoNote">
-          Отмена
-        </button>
-        <button class="form__button button__retry"
-          title="Повторить изменения"
-          @click="redoNote">
-          Повторить
-        </button>
-        <button class="form__button botton__add"
-          title="добавить заметку"
-          >
-          <router-link to="/edit/add">Добавить</router-link>
-        </button>
-      </div>
-      <div class="home__list" v-if="allNotes.length">
-        <Note v-for="(n, k) in allNotes"
-          :key="k"
-          :note="n"
-          @delete="delnote"/>
-      </div>
-      <div v-else>
-        Здесь нет заметок
-      </div>
-    </div>
-    <div v-else>
-      <Modal @answer="send"/>
-    </div>
-  </div>
+  <table class="home">
+    <tr class="result"><td colspan="4"><input type="text" value="0" disabled/></td></tr>
+    <tr v-for="(row,kr) in keyboard" :key="kr" class="row">
+      <td v-for="(btn,kb) in row" :key="kb">
+         <button :class="btn.type" :id="btn.label">
+           {{btn.label}}
+         </button>
+      </td>
+    </tr>
+  </table>
 </template>
 <script>
-import {mapGetters, mapActions} from 'vuex'
-import Note from '../components/Note.vue'
-import Modal from '../components/Modal.vue'
 export default {
   name: 'Home',
-  components: {
-    Note,
-    Modal
-  },
   data () {
     return {
-      modalShow: false,
-      idDelete: -1
-    }
-  },
-  computed: {
-    ...mapGetters(['allNotes'])
-  },
-  methods: {
-    ...mapActions(['undoNote', 'redoNote']),
-    delnote (id) {
-      this.modalShow = true
-      this.idDelete = id
-    },
-    send (type) {
-      if (type === 'yes') {
-        this.$store.dispatch('deleteNote', this.idDelete)
-      }
-      this.modalShow = false
+      keyboard: [[{
+        type: 'memory',
+        event: 'clearMemory',
+        label: 'MC'
+      }, {
+        type: 'memory',
+        event: 'addMemory',
+        label: 'M+'
+      }, {
+        type: 'memory',
+        event: 'clearMemory',
+        label: 'M-'
+      }, {
+        type: 'action',
+        event: 'clear',
+        label: 'C'
+      }], [{
+        type: 'number',
+        event: 'openBrackets',
+        label: '('
+      }, {
+        type: 'number',
+        event: 'openBrackets',
+        label: ')'
+      }, {
+        type: 'action',
+        event: 'invert',
+        label: '+/-'
+      }, {
+        type: 'action',
+        event: 'power',
+        label: '^'
+      }], [{
+        type: 'number',
+        event: 'addDigit',
+        label: '7'
+      }, {
+        type: 'number',
+        event: 'addDigit',
+        label: '8'
+      }, {
+        type: 'number',
+        event: 'addDigit',
+        label: '9'
+      }, {
+        type: 'action',
+        event: 'multiplication',
+        label: '*'
+      }], [{
+        type: 'number',
+        event: 'addDigit',
+        label: '4'
+      }, {
+        type: 'number',
+        event: 'addDigit',
+        label: '5'
+      }, {
+        type: 'number',
+        event: 'addDigit',
+        label: '6'
+      }, {
+        type: 'action',
+        event: 'divide',
+        label: '/'
+      }], [{
+        type: 'number',
+        event: 'addDigit',
+        label: '1'
+      }, {
+        type: 'number',
+        event: 'addDigit',
+        label: '2'
+      }, {
+        type: 'number',
+        event: 'addDigit',
+        label: '3'
+      }, {
+        type: 'action',
+        event: 'plus',
+        label: '+'
+      }], [{
+        type: 'number',
+        event: 'addDigit',
+        label: '0'
+      }, {
+        type: 'number',
+        event: 'addPoint',
+        label: '.'
+      }, {
+        type: 'action',
+        event: 'result',
+        label: '='
+      }, {
+        type: 'action',
+        event: 'minus',
+        label: '-'
+      }]]
     }
   }
 }
 </script>
-<style>
+<style scoped>
 .home {
-  margin: 0 auto;
-  padding: 0;
-  width: 80%;
-
+  border: 1px solid white;
+  background-color: blueviolet;
+  border-collapse: collapse;
+  width: 90%;
+  height: 90%;
+  margin: auto;
 }
-.home__title {
-  margin: 10px;
-  padding: 0;
-  font-size: 32px;
-  text-align: left;
-  color: #765681;
+.home tr {
+  height: 30px;
 }
-.home__list {
-  display: flex;
-  flex-wrap: wrap;
+.result td input {
+  background-color: transparent;
+  border: none;
+  color: yellow;
+  width: calc(100% - 30px);
+  font-size: 25px;
+  padding: 5px 15px;
+  text-align: right;
 }
-.nav {
-  padding: 30px;
+.row td {
+  width: 30%;
 }
-.form__link {
-  color: #fff;
-  font-size: 22px;
-  text-decoration: none;
+.row td button,
+.result td {
+  font-size: 20px;
 }
-.form__button a {
-  color: #fff;
-  text-decoration: none;
-}
-.nav__item {
-  list-style: none;
-  display: inline-block;
-  margin: 0 25px;
-  font-weight: bold;
-  color: #2c3e50;
-  font-size: 22px;
-}
-@media screen and (max-width: 500px) {
-  .nav {
-    padding: 5px;
-    width: 100%;
-  }
-  .nav__item {
-    margin: 0 5px;
-    font-size: 18px;
-  }
-  .nav a {
-    font-size: 18px;
-  }
-  .home {
-    width: 100%;
-    margin: 0;
-  }
-  .home__list {
-    width: 100%;
-    margin: 0;
-  }
+.row td button {
+  display: block;
+  background: none;
+  border: none;
+  width: 100%;
+  height: 100%;
+  color: white;
+  outline-color: white;
+  font-weight: 600;
 }
 </style>

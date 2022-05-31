@@ -1,12 +1,8 @@
 <template>
   <div id="app">
     <div class="linkbox">
-      <button class="link">
-        <router-link to="/">На главную</router-link>
-      </button>
-      <button class="link">
-        <router-link to="/info">О программе</router-link>
-      </button>
+        <router-link to="/"  class="link">На главную</router-link>
+        <router-link to="/info"  class="link">О программе</router-link>
     </div>
     <router-view></router-view>
   </div>
@@ -20,15 +16,19 @@
 
 <style>
   /* CSS */
+  body {
+    background-color: blueviolet;
+  }
   .link {
-    background-color: transparent;
-    color: blueviolet;
+    color: white;
+    background-color: blueviolet;
+    border: none;
     font-size: 14px;
     border: none;
-    margin: 0 15px;
+    margin: 0 5px;
   }
   .linkbox {
     margin: 15px auto;
-    width: 50%;
+    width: 70%;
   }
 </style>

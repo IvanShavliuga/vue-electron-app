@@ -59,7 +59,7 @@ export default {
 
 <style scoped>
   .title {
-    color: #888;
+    color: white;
     font-size: 18px;
     font-weight: initial;
     letter-spacing: .25px;
@@ -74,12 +74,12 @@ export default {
   }
 
   .item .name {
-    color: #6a6a6a;
+    color: white;
     margin-right: 6px;
   }
 
   .item .value {
-    color: #35495e;
+    color: yellow;
     font-weight: bold;
   }
 </style>

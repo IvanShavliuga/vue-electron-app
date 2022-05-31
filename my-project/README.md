@@ -2,7 +2,7 @@
 
 > My vue electron js test
 
-my simple todo list 
+my simple calculator
 
 #### Build Setup
 
