@@ -21,9 +21,14 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 300,
+    alwaysOnTop: true,
+    fullscreenable: false,
+    frame: false,
+    // icon: path.join(__static, 'icon.png'),
+    resizable: false,
+    height: 500,
     useContentSize: true,
-    width: 300
+    width: 500
   })
 
   mainWindow.loadURL(winURL)

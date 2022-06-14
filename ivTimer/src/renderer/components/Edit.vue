@@ -125,7 +125,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .edit__form {
   padding: 10px;
   margin: 10px;
