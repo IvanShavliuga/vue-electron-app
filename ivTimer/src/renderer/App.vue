@@ -3,14 +3,21 @@
     <nav class="nav">
         <router-link to="/"  class="nav__link">На главную</router-link>
         <router-link to="/info"  class="nav__link">О программе</router-link>
+        <span class="nav__link" @click="quit">Выход</span>
     </nav>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+  import { ipcRenderer } from 'electron'
   export default {
-    name: 'vue-electron-app'
+    name: 'vue-electron-app',
+    methods: {
+      quit () {
+        ipcRenderer.send('window-close')
+      }
+    }
   }
 </script>
 
@@ -22,6 +29,9 @@
     padding: 0;
     width: 100%;
     height: 100%;
+  }
+  span {
+    cursor: pointer;
   }
   #app {
     margin: 0;
