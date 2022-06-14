@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
 import '../renderer/store'
 
 /**
@@ -21,9 +21,14 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    height: 300,
+    alwaysOnTop: true,
+    fullscreenable: false,
+    frame: false,
+    // icon: path.join(__static, 'icon.png'),
+    resizable: false,
+    height: 500,
     useContentSize: true,
-    width: 300
+    width: 500
   })
 
   mainWindow.loadURL(winURL)
@@ -46,6 +51,26 @@ app.on('activate', () => {
     createWindow()
   }
 })
+/* ipcMain.on('toggle-minToTray', (event, arg) => {
+  if (arg) {
+    createTray()
+  } else {
+    tray.destroy()
+  }
+}) */
+
+ipcMain.on('window-close', (event, arg) => {
+  console.log('enter')
+  mainWindow.close()
+})
+/*
+ipcMain.on('window-minimize', (event, arg) => {
+  if (arg) {
+    mainWindow.hide()
+  } else {
+    mainWindow.minimize()
+  }
+}) */
 
 /**
  * Auto Updater

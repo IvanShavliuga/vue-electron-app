@@ -8,22 +8,16 @@ export default new Router({
     {
       path: '/',
       name: 'Home',
-      component: require('@/components/Home').default
+      component: require('@/views/Home').default
     },
     {
       path: '/info',
       name: 'Info',
-      component: require('@/components/Info').default
+      component: require('@/views/Info').default
     },
     {
       path: '*',
       redirect: '/'
-    },
-    {
-      path: '/edit/:id',
-      props: true,
-      name: 'Edit',
-      component: require('@/components/Edit').default
     }
   ]
 })

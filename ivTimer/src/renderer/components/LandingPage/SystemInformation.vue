@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box">
     <div class="title">Information</div>
     <div class="items">
       <div class="item">
@@ -58,6 +58,13 @@ export default {
 </script>
 
 <style scoped>
+  .box {
+    width: 70%;
+    height: 70%;
+    padding: 15px;
+    background-color: rgba(250, 10, 250, 0.3);
+    box-shadow: 0 0 15px 15px rgba(250, 250, 250, 0.3);
+  }
   .title {
     color: white;
     font-size: 18px;
