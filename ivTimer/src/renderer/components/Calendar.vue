@@ -30,7 +30,7 @@ export default {
       ],
       dayArray: [], // массив дней
       dCount: [], // количество дней в месяце
-      start: {
+      current: {
         day: 7,
         month: 4
       },
@@ -47,6 +47,12 @@ export default {
       } else {
         this.dCount = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
       }
+      const [day, month, year] = (new Date()).toLocaleDateString().split('.')
+      this.current = {
+        day: +day,
+        month: +month,
+        year: +year
+      }
       const startDayWeek = (new Date(y, m).getDay() || 7) - 1
       let daysInWeek = []
       const daysMonth = this.dCount[m]
@@ -62,7 +68,7 @@ export default {
         }
       }
       for (dw = startDayWeek; dw < 7; dw++) {
-        daysInWeek[dw] = { day: d, currmonth: true }
+        daysInWeek[dw] = { day: d, currmonth: true, weekend: dw >= 5 }
         d++
       }
       this.dayArray.push(daysInWeek)
@@ -72,10 +78,10 @@ export default {
         daysInWeek = []
         for (dw = 0; dw < 7; dw++) {
           if (d > daysMonth) {
-            daysInWeek[dw] = { day: endd, currmonth: false }
+            daysInWeek[dw] = { day: endd, currmonth: false, weekend: dw >= 5 }
             endd++
           } else {
-            daysInWeek[dw] = { day: d, currmonth: true }
+            daysInWeek[dw] = { day: d, currmonth: true, weekend: dw >= 5 }
           }
           d++
         }
@@ -83,10 +89,15 @@ export default {
       }
     },
     displayCells (d) {
-      if (this.start.day === d.day || this.end.day === d.day) {
-        return 'bg-blue text-white rounded'
+      if (this.current.day === d.day) {
+        return 'calendar__day-current'
       } else {
-        return `${d.currmonth && 'text-gray-700'}`
+        if (!d.currmonth) {
+          return 'calendar__day-prev'
+        } else {
+          if (d.weekend) return 'calendar__day-weekend'
+          return 'calendar__day-month'
+        }
       }
     }
   },
@@ -109,10 +120,8 @@ export default {
           </th>
         </tr>
         <tr v-for="(dwa, k1) in dayArray" :key="k1 * 100" class="calendar__table-row">
-          <td v-for="(d, k2) in dwa" :key="d + k2 * 100" class="calendar__table-cell">
-            <div :class="displayCells(d)" class="">
-              {{ d.day }}
-            </div>
+          <td v-for="(d, k2) in dwa" :key="d + k2 * 100" class="calendar__table-cell" :class="displayCells(d)">
+            {{ d.day }}
           </td>
         </tr>
       </tbody>
@@ -129,6 +138,8 @@ export default {
     text-align: center;
   }
   &__table {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: 800;
     width: 100%;
     border: 1px solid white;
     border-collapse: collapse;
@@ -148,6 +159,24 @@ export default {
     &-cell {
       color: white;
       text-align: center;
+      &:nth-child(6), &:nth-child(7) {
+        background-color: rgba(234,10,10, 0.1);
+      }
+    }
+  }
+  &__day {
+    &-current {
+      color: yellow;
+      background-color: rgba(234,234,10, 0.1);
+    }
+    &-prev {
+      color: silver;
+    }
+    &-month {
+      color: white;
+    }
+    &-weekend {
+      color: tomato;
     }
   }
 }
