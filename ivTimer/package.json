@@ -23,8 +23,8 @@
     "postinstall": "npm run lint:fix"
   },
   "build": {
-    "productName": "vue-electron-app",
-    "appId": "vue.electron.app",
+    "productName": "ivtimer",
+    "appId": "ivtimer.app",
     "directories": {
       "output": "build"
     },
