@@ -3,6 +3,7 @@
     <nav class="nav">
         <router-link to="/"  class="nav__link">На главную</router-link>
         <router-link to="/info"  class="nav__link">О программе</router-link>
+        <span class="nav__link" @click="tray">В трей</span>
         <span class="nav__link" @click="quit">Выход</span>
     </nav>
     <router-view></router-view>
@@ -13,10 +14,24 @@
   import { ipcRenderer } from 'electron'
   export default {
     name: 'vue-electron-app',
+    data () {
+      return {
+        isTray: false
+      }
+    },
     methods: {
       quit () {
         ipcRenderer.send('window-close')
+      },
+      tray () {
+        this.isTray = !this.isTray
+        ipcRenderer.send('toggle-minToTray', this.isTray)
+        // ipcRenderer.send('window-minimize', this.isTray)
       }
+    },
+    mounted () {
+      const title = document.querySelector('title')
+      title.innerText = 'ivTimer'
     }
   }
 </script>

@@ -1,7 +1,9 @@
 'use strict'
 
-import { app, BrowserWindow, ipcMain } from 'electron'
+import { app, BrowserWindow, ipcMain, Tray, Menu } from 'electron'
 import '../renderer/store'
+
+const path = require('path')
 
 /**
  * Set `__static` path to static files in production
@@ -11,7 +13,7 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
-let mainWindow
+let mainWindow, tray
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
@@ -21,9 +23,8 @@ function createWindow () {
    * Initial window options
    */
   mainWindow = new BrowserWindow({
-    alwaysOnTop: true,
     fullscreenable: false,
-    frame: false,
+    frame: true,
     // icon: path.join(__static, 'icon.png'),
     resizable: false,
     height: 500,
@@ -51,26 +52,38 @@ app.on('activate', () => {
     createWindow()
   }
 })
-/* ipcMain.on('toggle-minToTray', (event, arg) => {
+ipcMain.on('toggle-minToTray', (event, arg) => {
   if (arg) {
     createTray()
   } else {
     tray.destroy()
   }
-}) */
+})
 
 ipcMain.on('window-close', (event, arg) => {
-  console.log('enter')
   mainWindow.close()
 })
-/*
+
 ipcMain.on('window-minimize', (event, arg) => {
   if (arg) {
     mainWindow.hide()
   } else {
     mainWindow.minimize()
   }
-}) */
+})
+
+function createTray () {
+  tray = new Tray(path.join(__static, 'icon.png'))
+  tray.setToolTip('Iv2Timer\nClick to Restore')
+  tray.setContextMenu(Menu.buildFromTemplate([{ role: 'quit' }]))
+  mainWindow.hide()
+  tray.on('click', () => {
+    mainWindow.show()
+  })
+  tray.on('right-click', () => {
+    tray.popUpContextMenu()
+  })
+}
 
 /**
  * Auto Updater
