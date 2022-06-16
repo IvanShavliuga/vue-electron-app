@@ -13,6 +13,7 @@
       ref="audio-hour"
       :src="'./static/hour.mp3'"
     ></audio>
+    <!-- <p style="color: yellow">{{ tasks.length }}</p> -->
   </main>
 </template>
 <script>
@@ -36,20 +37,18 @@ export default {
         year: 0
       },
       notification: null,
-      strDate: '',
-      tasks: [{
-        day: 0,
-        month: 0,
-        year: 0,
-        hour: 0,
-        minute: 0,
-        second: 0
-      }]
+      intervalId: null,
+      strDate: ''
+    }
+  },
+  computed: {
+    tasks () {
+      return this.$store.getters.tasksList
     }
   },
   methods: {
     startTimer () {
-      setInterval(() => {
+      this.intervalId = setInterval(() => {
         const [date, time] = (new Date()).toLocaleString().split(',')
         const [day, month, year] = date.split('.')
         const [hour, minute, second] = time.split(':')
@@ -62,11 +61,13 @@ export default {
           minute,
           second
         }
-        this.tasks.forEach(el => {
-          if ($minute === el.minute && $second === el.second && $hour === el.hour && $day === el.day && $month === el.month && $year === el.year) {
-            this.notificationDisplay(el.title, el.body)
-          }
-        })
+        if (this.tasks.length) {
+          this.tasks.forEach(el => {
+            if ($minute === el.minute && $second === el.second && $hour === el.hour && $day === el.day && $month === el.month && $year === el.year) {
+              this.notificationDisplay(el.title, el.body)
+            }
+          })
+        }
         if (!$minute && !$second) {
           this.notificationDisplay(`New hour ${$hour}`, `This time ${hour}:${minute}:${second}`)
         }
@@ -89,7 +90,7 @@ export default {
     const [day, month, year] = date.split('.')
     const [hour, minute, second] = time.split(':')
     const [$day, $month, $year, $hour, $minute, $second] = [day, month, year, hour, minute, second].map(el => +el)
-    this.tasks[0] = {
+    this.$store.dispatch('initTask', {
       day: $day,
       month: $month,
       year: $year,
@@ -98,8 +99,12 @@ export default {
       second: $second,
       title: 'Give a call in two minutes',
       body: 'This is test'
-    }
+    })
     this.startTimer()
+  },
+  beforeDestroy () {
+    console.log('beforeDestroy')
+    clearInterval(this.intervalId)
   }
 }
 </script>
