@@ -21,6 +21,11 @@ export default new Router({
       component: require('@/views/List').default
     },
     {
+      path: '/add',
+      name: 'Add',
+      component: require('@/views/Add').default
+    },
+    {
       path: '*',
       redirect: '/'
     }
