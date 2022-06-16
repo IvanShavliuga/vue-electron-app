@@ -23,6 +23,6 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 450px;
+  height: 400px;
 }
 </style>

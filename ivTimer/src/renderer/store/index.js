@@ -3,8 +3,47 @@ import Vuex from 'vuex'
 
 import { createPersistedState, createSharedMutations } from 'vuex-electron'
 
-Vue.use(Vuex)
+const validateDate = (obj) => {
+  for (let period of ['second', 'minute', 'hour', 'day', 'month', 'year']) {
+    obj[period] = +obj[period]
+    switch (period) {
+      case 'second':
+      case 'minute':
+        if (obj[period] > 59) obj[period] = 0
+        break
+      case 'hour':
+        if (obj[period] > 23) obj[period] = 0
+        break
+      case 'month':
+        if (obj[period] > 12) obj[period] = 0
+        break
+      case 'day':
+        switch (obj.month) {
+          case 2:
+            const vy = obj.year % 4 || (obj.year % 100 === 0 && obj.year % 400) ? 28 : 29
+            if (obj.day > vy) obj.day = 1
+            break
+          case 1:
+          case 3:
+          case 5:
+          case 7:
+          case 8:
+          case 10:
+          case 12:
+            if (obj.day > 31) obj.day = 1
+            break
+          default:
+            if (obj.day > 30) obj.day = 1
+            break
+        }
+        break
+    }
+  }
+  obj.done = false
+  return obj
+}
 
+Vue.use(Vuex)
 export default new Vuex.Store({
   plugins: [
     createPersistedState(),
@@ -12,181 +51,28 @@ export default new Vuex.Store({
   ],
   strict: process.env.NODE_ENV !== 'production',
   state: {
-    notes: [{
-      id: 0,
-      title: 'Lorem Ipsum is simply dummy text',
-      todos: [{
-        id: 0,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: true
-      }, {
-        id: 1,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: false
-      }, {
-        id: 2,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: true
-      }, {
-        id: 3,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: false
-      }, {
-        id: 4,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: false
-      }]
-    }, {
-      id: 1,
-      title: 'Lorem Ipsum is simply dummy text',
-      todos: [{
-        id: 0,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: false
-      }, {
-        id: 1,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: false
-      }, {
-        id: 2,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: false
-      }, {
-        id: 3,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: true
-      }, {
-        id: 4,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: true
-      }]
-    }, {
-      id: 2,
-      title: 'Lorem Ipsum is simply dummy text',
-      todos: [{
-        id: 0,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: true
-      }, {
-        id: 1,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: false
-      }, {
-        id: 2,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: true
-      }, {
-        id: 3,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: false
-      }, {
-        id: 4,
-        title: 'Lorem Ipsum is simply dummy text',
-        done: true
-      }]
-    }]
+    tasksList: []
   },
   mutations: {
-    INIT_DATA (state) {
-      let data = localStorage.getItem('vuetodolist_undo')
-      console.log(data)
-      console.log(state.notes)
-      /* if (data!=null) {
-          state.notes = JSON.parse(data);
-          console.log(state.notes)
-      } */
+    INIT_TASK (state, initial) {
+      const obj = { ...initial }
+      state.tasksList = [{ ...validateDate(obj) }]
     },
-    SAVE_NOTE (state, note) {
-      for (let i = 0; i < state.notes.length; i++) { console.log('save #' + i + ': ' + state.notes[i].todos[0].title) }
-      const nt = {
-        id: note.id,
-        title: note.title,
-        todos: note.todos
-      }
-      const index = state.notes.findIndex(i => i.id === note.id)
-      if (index !== -1) {
-        state.notes.splice(index, 1, nt)
-      } else {
-        state.notes.push(nt)
-        state.addnote = false
-      }
-      state.note = {}
-    },
-    DELETE_NOTE (state, id) {
-      localStorage.setItem('vuetodolist_undo', JSON.stringify(state.notes))
-      const index = state.notes.findIndex(i => i.id === id)
-      if (index !== -1) {
-        state.notes.splice(index, 1)
-      }
-    },
-    UNDO_NOTE (state) {
-      const nt = state.notes
-      let data = localStorage.getItem('vuetodolist_undo')
-      if (data) {
-        state.notes = JSON.parse(data)
-        localStorage.setItem('vuetodolist_redo', JSON.stringify(nt))
-      }
-    },
-    REDO_NOTE (state) {
-      const nt = state.notes
-      let data = localStorage.getItem('vuetodolist_redo')
-      if (data) {
-        state.notes = JSON.parse(data)
-        localStorage.setItem('vuetodolist_undo', JSON.stringify(nt))
-      }
-    },
-    TO_STORAGE (state, type) {
-      if (type === 'undo') { localStorage.setItem('vuetodolist_undo', JSON.stringify(state.notes)) }
-      if (type === 'redo') { localStorage.setItem('vuetodolist_redo', JSON.stringify(state.notes)) }
+    ADD_TASK (state, task) {
+      state.tasksList.push({ ...validateDate(task) })
     }
   },
   actions: {
-    initData ({commit}) {
-      try {
-        commit('INIT_DATA')
-      } catch (e) {
-        console.log(e)
-      }
+    initTask ({ commit }, initial) {
+      commit('INIT_TASK', initial)
     },
-    toStorage ({commit}, type) {
-      try {
-        commit('TO_STORAGE', type)
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    deleteNote ({commit}, index) {
-      try {
-        commit('DELETE_NOTE', index)
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    undoNote ({commit}) {
-      try {
-        commit('UNDO_NOTE')
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    redoNote ({commit}) {
-      try {
-        commit('REDO_NOTE')
-      } catch (e) {
-        console.log(e)
-      }
-    },
-    saveNote ({commit}, note) {
-      try {
-        commit('SAVE_NOTE', note)
-      } catch (e) {
-        console.log(e)
-      }
+    addTask ({ commit }, obj) {
+      commit('ADD_TASK', obj)
     }
   },
   getters: {
-    allNotes (state) {
-      return state.notes
+    tasksList (state) {
+      return state.tasksList
     }
   }
 })
