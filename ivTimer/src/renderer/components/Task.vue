@@ -9,7 +9,7 @@ export default {
 </script>
 <template>
     <div class="task">
-        <p class="task__title">
+        <p :class="`task__title task__title-${task.done ? 'done' : 'wait'}`">
             {{ task.title }}
         </p>
         <p class="task__date">
@@ -17,6 +17,10 @@ export default {
         </p>
         <p class="task__body">
             {{ task.body }}
+        </p>
+        <p class="task__control">
+            <span>Изменить</span>
+            <span>Удалить</span>
         </p>
     </div>
 </template>
@@ -30,17 +34,29 @@ export default {
         padding: 5px;
     }
     &__title {
-        color: red;
-        background-color: white;
+        &-wait {
+          color: white;
+          background-color: red;
+        }
+        &-done {
+          color: white;
+          background-color: green;
+        }
         font-weight: 800;
     }
     &__date {
-        color: yellow;
-        background-color: rgba(200,20,200,0.3);
+        font-weight: 700;
+        color: black;
+        background-color: silver;
     }
     &__body {
-        color: white;
-        background-color: rgba(200,20,200,0.3);
+        color: black;
+        background-color: silver;
+    }
+    &__control {
+        color: red;
+        font-weight: 700;
+        background-color: papayawhip;
     }
 }
 </style>

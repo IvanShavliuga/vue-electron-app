@@ -16,6 +16,11 @@ export default new Router({
       component: require('@/views/Info').default
     },
     {
+      path: '/list',
+      name: 'List',
+      component: require('@/views/List').default
+    },
+    {
       path: '*',
       redirect: '/'
     }
