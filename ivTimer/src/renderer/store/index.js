@@ -56,10 +56,15 @@ export default new Vuex.Store({
   mutations: {
     INIT_TASK (state, initial) {
       const obj = { ...initial }
+      obj.id = 1
       state.tasksList = [{ ...validateDate(obj) }]
     },
     ADD_TASK (state, task) {
+      task.id = state.tasksList.length + 1
       state.tasksList.push({ ...validateDate(task) })
+    },
+    SET_TASKDONE (state, id) {
+      state.tasksList[id - 1].done = true
     }
   },
   actions: {
@@ -68,6 +73,9 @@ export default new Vuex.Store({
     },
     addTask ({ commit }, obj) {
       commit('ADD_TASK', obj)
+    },
+    setTaskDone ({ commit }, id) {
+      commit('SET_TASKDONE', id)
     }
   },
   getters: {
