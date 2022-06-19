@@ -1,6 +1,6 @@
 <template>
     <main class="list">
-        <task v-for="(p,k) in pages" :key="k" :task="tasks[p]"></task>
+        <task v-for="(p,k) in pages" :key="k" :task="tasks[p]" @delete-task="deleteClick" @edit-task="editClick"></task>
         <p v-if="tasks.length > 3" class="list__control">
           <button class="list__button" @click="prev">Назад</button>
           <span>{{ currentPage + 1 }} / {{ tasks.length }}</span>
@@ -56,6 +56,12 @@ export default {
     },
     next () {
       if (this.currentPage < this.$store.getters.tasksList.length - 3) this.currentPage += 3
+    },
+    editClick (t) {
+      this.$router.push('/add?id=' + t.id)
+    },
+    deleteClick (t) {
+      console.log(t)
     }
   }
 }

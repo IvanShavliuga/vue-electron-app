@@ -5,7 +5,7 @@ export default {
       type: [Object, undefined]
     }
   },
-  methdos: {
+  methods: {
     deleteTask () {
       this.$emit('delete-task', this.task)
     },
@@ -27,8 +27,8 @@ export default {
             {{ task.body }}
         </p>
         <p class="task__control">
-            <span>Изменить</span>
-            <span>Удалить</span>
+            <span @click="editTask">Изменить</span>
+            <span @click="deleteTask">Удалить</span>
         </p>
     </div>
 </template>

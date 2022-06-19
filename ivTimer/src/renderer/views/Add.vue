@@ -1,6 +1,6 @@
 <template>
     <main class="add">
-        <h1 class="add__header">Добавление задачи #{{ editData.id }}</h1>
+        <h1 class="add__header">Добавление задачи #{{ $route.query.id || editData.id }}</h1>
         <div class="add__box">
             <div class="add__box-control">
                 <p class="add__label">Заголовок</p>
@@ -23,7 +23,7 @@
                 <input class="add__input add__input-number" type="number" v-model="editData.year"/>
             </div>            
             <div class="add__box-control">
-                <button class="add__button" @click="addTask">Добавить</button>
+                <button class="add__button" @click="addTask">{{ $route.query.id ? 'Изменить' : 'Добавить' }}</button>
                 <button class="add__button" @click="setCurrent">Тек. время</button>
             </div>
         </div>
@@ -127,7 +127,11 @@ export default {
   methods: {
     addTask () {
       if (this.editData.title.length < 40 && this.editData.body.length < 40 && this.editData.title.length > 5 && this.editData.body.length > 5) {
-        this.$store.dispatch('addTask', { ...this.editData })
+        if ('id' in this.$route.query) {
+          this.$store.dispatch('changeTask', { ...this.editData })
+        } else {
+          this.$store.dispatch('addTask', { ...this.editData })
+        }
         this.errorText = ''
         this.successText = 'Задача успешно добавлена'
       } else {
@@ -148,8 +152,14 @@ export default {
     }
   },
   mounted () {
-    this.editData.id = this.$store.getters.tasksList.length + 1
+    const arr = [ ...this.$store.getters.tasksList ]
+    this.editData.id = arr.length + 1
     this.setCurrent()
+    if ('id' in this.$route.query) {
+      const fres = arr.filter(el => el.id === +this.$route.query.id)[0]
+      if (fres) this.editData = { ...fres }
+      console.log(fres)
+    }
   }
 }
 </script>

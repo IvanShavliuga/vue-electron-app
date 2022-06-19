@@ -63,6 +63,10 @@ export default new Vuex.Store({
       task.id = state.tasksList.length + 1
       state.tasksList.push({ ...validateDate(task) })
     },
+    CHANGE_TASK (state, task) {
+      const idFind = state.tasksList.findIndex(el => el.id === task.id)
+      state.tasksList[idFind] = { ...validateDate(task) }
+    },
     SET_TASKDONE (state, id) {
       state.tasksList[id - 1].done = true
     }
@@ -73,6 +77,9 @@ export default new Vuex.Store({
     },
     addTask ({ commit }, obj) {
       commit('ADD_TASK', obj)
+    },
+    changeTask ({ commit }, obj) {
+      commit('CHANGE_TASK', obj)
     },
     setTaskDone ({ commit }, id) {
       commit('SET_TASKDONE', id)
