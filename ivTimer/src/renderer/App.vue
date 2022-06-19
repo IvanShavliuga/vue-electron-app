@@ -78,7 +78,7 @@
             this.tasks.forEach(el => {
               if ($minute === el.minute && $second === el.second && $hour === el.hour && $day === el.day && $month === el.month && $year === el.year) {
                 this.notificationDisplay(el.title, el.body)
-                el.done = true
+                this.$store.dispatch('setTaskDone', el.id)
               }
             })
           }

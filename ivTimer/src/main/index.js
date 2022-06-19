@@ -27,9 +27,9 @@ function createWindow () {
     frame: true,
     // icon: path.join(__static, 'icon.png'),
     resizable: false,
-    height: 500,
+    height: 520,
     useContentSize: true,
-    width: 500
+    width: 520
   })
 
   mainWindow.loadURL(winURL)

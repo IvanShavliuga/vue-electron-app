@@ -2,13 +2,21 @@
 export default {
   props: {
     task: {
-      type: Object
+      type: [Object, undefined]
+    }
+  },
+  methdos: {
+    deleteTask () {
+      this.$emit('delete-task', this.task)
+    },
+    editTask () {
+      this.$emit('edit-task', this.task)
     }
   }
 }
 </script>
 <template>
-    <div class="task">
+    <div v-if="task" class="task">
         <p :class="`task__title task__title-${task.done ? 'done' : 'wait'}`">
             {{ task.title }}
         </p>
