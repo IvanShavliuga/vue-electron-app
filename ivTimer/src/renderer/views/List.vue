@@ -61,7 +61,7 @@ export default {
       this.$router.push('/add?id=' + t.id)
     },
     deleteClick (t) {
-      console.log(t)
+      this.$store.dispatch('deleteTask', t.id)
     }
   }
 }

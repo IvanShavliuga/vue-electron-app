@@ -119,8 +119,7 @@ export default {
         second: 1,
         day: 1,
         month: 1,
-        year: 2022,
-        id: 0
+        year: 2022
       }
     }
   },
@@ -153,7 +152,6 @@ export default {
   },
   mounted () {
     const arr = [ ...this.$store.getters.tasksList ]
-    this.editData.id = arr.length + 1
     this.setCurrent()
     if ('id' in this.$route.query) {
       const fres = arr.filter(el => el.id === +this.$route.query.id)[0]
