@@ -18,7 +18,7 @@ export default {
 <template>
     <div v-if="task" class="task">
         <p :class="`task__title task__title-${task.done ? 'done' : 'wait'}`">
-            {{ task.title }}
+            {{ task.id }} {{ task.title }}
         </p>
         <p class="task__date">
             {{task.day}}.{{task.month}}.{{ task.year }}  {{task.hour}}:{{task.minute}}:{{ task.second }}

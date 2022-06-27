@@ -39,7 +39,7 @@ const validateDate = (obj) => {
         break
     }
   }
-  obj.done = false
+  if (obj.id === undefined) obj.id = ~~(Math.random() * 100000)
   return obj
 }
 
@@ -55,12 +55,11 @@ export default new Vuex.Store({
   },
   mutations: {
     INIT_TASK (state, initial) {
-      const obj = { ...initial }
-      obj.id = 1
-      state.tasksList = [{ ...validateDate(obj) }]
+      initial.done = false
+      state.tasksList = [{ ...validateDate(initial) }]
     },
     ADD_TASK (state, task) {
-      task.id = state.tasksList.length + 1
+      task.done = false
       state.tasksList.push({ ...validateDate(task) })
     },
     CHANGE_TASK (state, task) {
@@ -68,18 +67,28 @@ export default new Vuex.Store({
       state.tasksList[idFind] = { ...validateDate(task) }
     },
     SET_TASKDONE (state, id) {
-      state.tasksList[id - 1].done = true
+      const idFind = state.tasksList.findIndex(el => el.id === id)
+      console.log(idFind)
+      state.tasksList[idFind].done = true
+    },
+    DELETE_TASK (state, id) {
+      const idFind = state.tasksList.findIndex(el => el.id === +id)
+      console.log(idFind)
+      state.tasksList.splice(idFind, 1)
     }
   },
   actions: {
     initTask ({ commit }, initial) {
-      commit('INIT_TASK', initial)
+      commit('INIT_TASK', { ...initial })
     },
     addTask ({ commit }, obj) {
-      commit('ADD_TASK', obj)
+      commit('ADD_TASK', { ...obj })
     },
     changeTask ({ commit }, obj) {
       commit('CHANGE_TASK', obj)
+    },
+    deleteTask ({ commit }, id) {
+      commit('DELETE_TASK', id)
     },
     setTaskDone ({ commit }, id) {
       commit('SET_TASKDONE', id)
