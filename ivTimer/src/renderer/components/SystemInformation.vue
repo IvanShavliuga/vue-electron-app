@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import * as pckg from './../../../../package.json'
+import * as pckg from './../../../package.json'
 export default {
   data () {
     return {

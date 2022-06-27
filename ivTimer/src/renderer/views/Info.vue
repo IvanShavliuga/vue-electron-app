@@ -5,16 +5,11 @@
 </template>
 
 <script>
-  import SystemInformation from '../components/LandingPage/SystemInformation'
+  import SystemInformation from '../components/SystemInformation'
 
   export default {
-    name: 'landing-page',
-    components: { SystemInformation },
-    methods: {
-      open (link) {
-        this.$electron.shell.openExternal(link)
-      }
-    }
+    name: 'info-page',
+    components: { SystemInformation }
   }
 </script>
 
