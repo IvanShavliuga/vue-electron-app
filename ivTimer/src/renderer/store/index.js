@@ -68,12 +68,10 @@ export default new Vuex.Store({
     },
     SET_TASKDONE (state, id) {
       const idFind = state.tasksList.findIndex(el => el.id === id)
-      console.log(idFind)
       state.tasksList[idFind].done = true
     },
     DELETE_TASK (state, id) {
       const idFind = state.tasksList.findIndex(el => el.id === +id)
-      console.log(idFind)
       state.tasksList.splice(idFind, 1)
     }
   },
@@ -97,6 +95,11 @@ export default new Vuex.Store({
   getters: {
     tasksList (state) {
       return state.tasksList
+    },
+    doneDisplay (state) {
+      if (!state.tasksList.length) return ''
+      const doneLi = state.tasksList.filter((el) => el.done === true)
+      return `${doneLi.length} / ${state.tasksList.length}`
     }
   }
 })

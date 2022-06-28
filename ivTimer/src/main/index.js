@@ -24,7 +24,7 @@ function createWindow () {
    */
   mainWindow = new BrowserWindow({
     fullscreenable: false,
-    frame: true,
+    frame: false,
     // icon: path.join(__static, 'icon.png'),
     resizable: false,
     height: 520,
