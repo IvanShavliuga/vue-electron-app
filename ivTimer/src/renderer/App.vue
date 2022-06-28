@@ -5,6 +5,7 @@
       ref="audio-hour"
       :src="'./static/hour.mp3'"
     ></audio>
+    <div class="title"><p class="title__text">IvTimer {{ doneDisplay }}</p></div>
     <nav class="nav">
         <router-link to="/"  class="nav__link">На главную</router-link>
         <router-link to="/list"  class="nav__link">Список задач</router-link>
@@ -47,6 +48,9 @@
     computed: {
       tasks () {
         return this.$store.getters.tasksList
+      },
+      doneDisplay () {
+        return this.$store.getters.doneDisplay
       }
     },
     methods: {
@@ -140,6 +144,21 @@
   #app {
     margin: 0;
     padding: 0;
+  }
+  .title {
+    background-color: indigo;
+    padding: 5px 0;
+    margin: 0;
+    width: 100%;
+    -webkit-app-region: drag;
+    &__text {
+      color: yellow;
+      width: 40%;
+      margin: 0 auto;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 3px;
+    }
   }
   .nav {
     margin: 0;
