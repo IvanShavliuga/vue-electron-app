@@ -8,7 +8,7 @@ my simple calendar & task list
   <img alt="screen-index" src=".github/screen-index.png">
 </div>
 <div align="center">
-  <img alt="screen-tsks-list" src=".github/screen-tsks-list.png">
+  <img alt="screen-tsks-list" src=".github/screen-tasks-list.png">
 </div>
 
 #### Build Setup
