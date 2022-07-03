@@ -4,6 +4,13 @@
 
 my simple calendar & task list
 
+<div align="center">
+  <img alt="Pomotroid" src=".github/screen-index.png">
+</div>
+<div align="center">
+  <img alt="Pomotroid in action" src=".github/images/sreen-tsks-list.png">
+</div>
+
 #### Build Setup
 
 ``` bash
