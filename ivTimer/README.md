@@ -4,10 +4,8 @@
 
 my simple calendar & task list
 
-<div align="center">
+<div align="center" style="flex">
   <img alt="screen-index" src=".github/screen-index.png">
-</div>
-<div align="center">
   <img alt="screen-tsks-list" src=".github/screen-tasks-list.png">
 </div>
 
