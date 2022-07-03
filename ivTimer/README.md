@@ -4,7 +4,7 @@
 
 my simple calendar & task list
 
-<div align="center" style="flex">
+<div align="center" style="display: flex">
   <img alt="screen-index" src=".github/screen-index.png">
   <img alt="screen-tsks-list" src=".github/screen-tasks-list.png">
 </div>
