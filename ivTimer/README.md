@@ -5,10 +5,10 @@
 my simple calendar & task list
 
 <div align="center">
-  <img alt="screen-index" src=".github/ivTimer/screen-index.png">
+  <img alt="screen-index" src=".github/screen-index.png">
 </div>
 <div align="center">
-  <img alt="screen-tsks-list" src=".github/ivTimer/screen-tsks-list.png">
+  <img alt="screen-tsks-list" src=".github/screen-tsks-list.png">
 </div>
 
 #### Build Setup
