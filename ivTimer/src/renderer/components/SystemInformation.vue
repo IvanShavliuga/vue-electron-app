@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <div class="title">Information</div>
+    <div class="header">Information</div>
     <div class="items">
       <div class="item">
         <div class="name">App name:</div>
@@ -65,9 +65,10 @@ export default {
     background-color: rgba(250, 10, 250, 0.3);
     box-shadow: 0 0 15px 15px rgba(250, 250, 250, 0.3);
   }
-  .title {
-    color: white;
-    font-size: 18px;
+  .header {
+    color: aqua;
+    background-color: transparent;
+    font-size: 20px;
     font-weight: initial;
     letter-spacing: .25px;
     margin-top: 10px;

@@ -3,7 +3,7 @@
         <task v-for="(p,k) in pages" :key="k" :task="tasks[p]" @delete-task="deleteClick" @edit-task="editClick"></task>
         <p v-if="tasks.length > 3" class="list__control">
           <button class="list__button" @click="prev">Назад</button>
-          <span>{{ currentPage + 1 }} / {{ tasks.length }}</span>
+          <span class="list__counters">{{ currentPage + 1 }} / {{ tasks.length }}</span>
           <button class="list__button" @click="next">Вперед</button>
         </p>
     </main>
@@ -11,20 +11,33 @@
 <style lang="scss" scoped>
 .list {
     &__button {
-        color: gray;
-        background-color: bisque;
-        padding: 5px 15px;
+        display: block;
+        width: 60px;
+        color: yellow;
+        background-color: transparent;
+        padding: 3px 0;
         border: none;
+        outline: none;
+    }
+    &__counters {
+        display: block;
+        width: 75%;
     }
     &__control {
       position: fixed;
       bottom: 0;
+      left: 25%;
+      right: 25%;
       z-index: 20;
+      display: flex;
+      justify-content: space-evenly;
       background-color: darkslateblue;
-      width: 100%;
+      width: 45%;
       text-align: center;
-      padding: 10px 0;
-      margin: 0;
+      padding: 10px 15px;
+      margin: 0 auto;
+      border-top-left-radius: 20px;
+      border-top-right-radius: 20px;
     }
 }
 p {
