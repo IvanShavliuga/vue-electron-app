@@ -5,14 +5,18 @@
       ref="audio-hour"
       :src="'./static/hour.mp3'"
     ></audio>
-    <div class="title"><p class="title__text">IvTimer {{ doneDisplay }}</p></div>
+    <div class="title">
+      <button class="title__button"  @click="about">?</button>
+      <p class="title__text">IvTimer <span class="title__counters">{{ doneDisplay }}</span></p>
+      <p class="title__block">
+        <button class="title__button" @click="tray">_</button>
+        <button class="title__button" @click="quit">X</button>
+      </p>
+    </div>
     <nav class="nav">
         <router-link to="/"  class="nav__link">На главную</router-link>
         <router-link to="/list"  class="nav__link">Список задач</router-link>
         <router-link to="/add"  class="nav__link">Добавить задачу</router-link>
-        <router-link to="/info"  class="nav__link">О программе</router-link>
-        <span class="nav__link" @click="tray">В трей</span>
-        <span class="nav__link" @click="quit">Выход</span>
     </nav>
     <header class="timerbox__header">
       <h1 class="timerbox__header-current" @click="notificationDisplay">
@@ -54,6 +58,9 @@
       }
     },
     methods: {
+      about () {
+        this.$router.push('/info')
+      },
       quit () {
         ipcRenderer.send('window-close')
       },
@@ -146,18 +153,39 @@
     padding: 0;
   }
   .title {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Courier New', Courier, monospace;
     background-color: indigo;
     padding: 5px 0;
     margin: 0;
     width: 100%;
-    -webkit-app-region: drag;
+    &__counters {
+      letter-spacing: -1px;
+    }
     &__text {
-      color: yellow;
-      width: 40%;
-      margin: 0 auto;
+      color: tan;
+      width: calc(100% - 32px * 3 - 30px);
+      margin: 0;
       font-size: 18px;
       font-weight: 600;
-      letter-spacing: 3px;
+      letter-spacing: 1px;
+      -webkit-app-region: drag;
+    }
+    &__button {
+      font-family: inherit;
+      color: tan;
+      background-color: transparent;
+      border: none;
+      width: 32px;
+      margin: 0 1px;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      outline: none;
+    }
+    &__block {
+      margin: 0;
     }
   }
   .nav {
@@ -179,14 +207,14 @@
     margin: 0;
     &__header {
       text-align: center;
-      border-bottom: 1px solid yellow;
+      border-bottom: 1px solid tan;
       margin: 0;
       cursor: pointer;
       &-current {
         padding: 0;
         margin: 0;
-        background: rgba(20,20,200,0.5);
-        color: yellow;
+        background: rgba(20,20,120,0.7);
+        color: tan;
       }
     }
   }
