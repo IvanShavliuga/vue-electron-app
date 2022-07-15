@@ -3,7 +3,7 @@
   "version": "0.2.1",
   "author": "Ivan Shavliuga (Ivanov)",
   "email": "iva.drakon.nov@gmail.com",
-  "description": "My vue electron js test",
+  "description": "IvTimer (timers & tasks list)",
   "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
