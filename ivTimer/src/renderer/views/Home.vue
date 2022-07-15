@@ -1,7 +1,6 @@
 <template>
   <main class="timerbox">
     <calendar/>
-    <!-- <p style="color: yellow">{{ tasks.length }}</p> -->
   </main>
 </template>
 <script>

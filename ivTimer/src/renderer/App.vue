@@ -20,8 +20,8 @@
     </nav>
     <header class="timerbox__header">
       <h1 class="timerbox__header-current" @click="notificationDisplay">
-        {{timer.day}} : {{timer.month}} : {{timer.year}}
-        {{timer.hour}} : {{timer.minute}} : {{timer.second}}
+        {{timer.day}}.{{timer.month}}.{{timer.year}}
+        {{timer.hour}}:{{timer.minute}}:{{timer.second}}
       </h1>
     </header>
     <router-view></router-view>
@@ -130,7 +130,6 @@
       this.startTimer()
     },
     beforeDestroy () {
-      console.log('beforeDestroy')
       clearInterval(this.intervalId)
     }
   }
