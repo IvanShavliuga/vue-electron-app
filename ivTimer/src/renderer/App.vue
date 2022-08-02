@@ -17,9 +17,10 @@
         <router-link to="/"  class="nav__link">На главную</router-link>
         <router-link to="/list"  class="nav__link">Список задач</router-link>
         <router-link to="/add"  class="nav__link">Добавить задачу</router-link>
+        <router-link to="/options"  class="nav__link">Настройки</router-link>
     </nav>
     <header class="timerbox__header">
-      <h1 class="timerbox__header-current" @click="notificationDisplay">
+      <h1 class="timerbox__header-current" @click="notificationTest">
         {{timer.day}}.{{timer.month}}.{{timer.year}}
         {{timer.hour}}:{{timer.minute}}:{{timer.second}}
       </h1>
@@ -71,6 +72,7 @@
       },
       startTimer () {
         this.intervalId = setInterval(() => {
+          const options = { ...this.$store.getters.options }
           const [date, time] = (new Date()).toLocaleString().split(',')
           const [day, month, year] = date.split('.')
           const [hour, minute, second] = time.split(':')
@@ -94,10 +96,16 @@
               }
             })
           }
-          if (!$minute && !$second) {
+          if (!$minute && !$second && options.hour) {
             this.notificationDisplay(`New hour ${$hour}`, `This time ${hour}:${minute}:${second}`)
           }
         }, 1000)
+      },
+      notificationTest () {
+        const test = this.$store.getters.options.test
+        if (test) {
+          this.notificationDisplay('Test application', 'This is text for test')
+        }
       },
       notificationDisplay (title, body = 'This is text for test') {
         if (typeof title === 'object') {

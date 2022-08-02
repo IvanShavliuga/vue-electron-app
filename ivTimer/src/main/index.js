@@ -72,6 +72,10 @@ ipcMain.on('window-minimize', (event, arg) => {
   }
 })
 
+/* ipcMain.on('toggle-alwaysOnTop', (event, arg) => {
+  mainWindow.setAlwaysOnTop(arg)
+}) */
+
 function createTray () {
   tray = new Tray(path.join(__static, 'icon.png'))
   tray.setToolTip('Iv2Timer\nClick to Restore')

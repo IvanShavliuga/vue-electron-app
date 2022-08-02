@@ -1,7 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+// import { createLocalStore } from '@/utils/local-store'
+// import { ipcRenderer } from 'electron'
 
 import { createPersistedState, createSharedMutations } from 'vuex-electron'
+
+// const localStore = createLocalStore()
 
 const validateDate = (obj) => {
   for (let period of ['second', 'minute', 'hour', 'day', 'month', 'year']) {
@@ -51,7 +55,12 @@ export default new Vuex.Store({
   ],
   strict: process.env.NODE_ENV !== 'production',
   state: {
-    tasksList: []
+    tasksList: [],
+    options: {
+      alwaysOnTop: false,
+      hour: true,
+      test: true
+    }
   },
   mutations: {
     INIT_TASK (state, initial) {
@@ -61,10 +70,12 @@ export default new Vuex.Store({
     ADD_TASK (state, task) {
       task.done = false
       state.tasksList.push({ ...validateDate(task) })
+      // localStore.set('tasksList', JSON.stringify(state.tasksList))
     },
     CHANGE_TASK (state, task) {
       const idFind = state.tasksList.findIndex(el => el.id === task.id)
       state.tasksList[idFind] = { ...validateDate(task) }
+      // localStore.set('tasksList', JSON.stringify(state.tasksList))
     },
     SET_TASKDONE (state, id) {
       const idFind = state.tasksList.findIndex(el => el.id === id)
@@ -73,6 +84,12 @@ export default new Vuex.Store({
     DELETE_TASK (state, id) {
       const idFind = state.tasksList.findIndex(el => el.id === +id)
       state.tasksList.splice(idFind, 1)
+      // localStore.set('tasksList', JSON.stringify(state.tasksList))
+    },
+    SET_OPTIONS (state, options) {
+      state.options = options
+      // localStore.set('options', JSON.stringify(options))
+      // ipcRenderer.send('toggle-alwaysOnTop', !options.alwaysOnTop)
     }
   },
   actions: {
@@ -81,6 +98,9 @@ export default new Vuex.Store({
     },
     addTask ({ commit }, obj) {
       commit('ADD_TASK', { ...obj })
+    },
+    setOptions ({ commit }, options) {
+      commit('SET_OPTIONS', options)
     },
     changeTask ({ commit }, obj) {
       commit('CHANGE_TASK', obj)
@@ -100,6 +120,9 @@ export default new Vuex.Store({
       if (!state.tasksList.length) return ''
       const doneLi = state.tasksList.filter((el) => el.done === true)
       return `${doneLi.length} / ${state.tasksList.length}`
+    },
+    options (state) {
+      return state.options
     }
   }
 })
