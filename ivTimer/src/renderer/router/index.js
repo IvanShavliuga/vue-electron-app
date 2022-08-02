@@ -26,6 +26,11 @@ export default new Router({
       component: require('@/views/Add').default
     },
     {
+      path: '/options',
+      name: 'Options',
+      component: require('@/views/Options').default
+    },
+    {
       path: '*',
       redirect: '/'
     }
