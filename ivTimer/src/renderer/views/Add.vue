@@ -158,6 +158,13 @@ export default {
       if (fres) this.editData = { ...fres }
       console.log(fres)
     }
+    if ('day' in this.$route.query && 'month' in this.$route.query && 'year' in this.$route.query) {
+      this.editData.day = +this.$route.query.day
+      this.editData.month = +this.$route.query.month
+      this.editData.year = +this.$route.query.year
+      this.editData.title = `Task for ${this.editData.day}.${this.editData.month}.${this.editData.year} day `
+      this.editData.body = 'It will definitely be completed'
+    }
   }
 }
 </script>
