@@ -65,9 +65,19 @@ export default new Vuex.Store({
   mutations: {
     INIT_TASK (state, initial) {
       initial.done = false
-      state.tasksList = [{ ...validateDate(initial) }]
-      localStore.set('list', state.tasksList)
-      localStore.set('options', state.options)
+      const getList = localStore.get('list')
+      if (getList) {
+        state.tasksList = getList
+      } else {
+        state.tasksList = [{ ...validateDate(initial) }]
+        localStore.set('list', state.tasksList)
+      }
+      const getOpt = localStore.get('options')
+      if (getOpt) {
+        state.options = getOpt
+      } else {
+        localStore.set('list', state.tasksList)
+      }
     },
     ADD_TASK (state, task) {
       task.done = false
