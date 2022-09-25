@@ -2,10 +2,10 @@
 
 My first vue.js & electron.js application
 
-[X] my simple calendar
-[X] tasks list
-[X] saved data to file
-[X] current time 
+* my simple calendar
+* tasks list
+* saved data to file
+* current time 
 
 <div align="center" style="display: flex">
   <img alt="screen-index" src=".github/screen-index.png">
