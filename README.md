@@ -1,5 +1,5 @@
-# vue-electron-app
-мои примеры использования electron.js и vue.js
-созданы для освоения новой технологии
+## My electron.js app
 
-ivTimer простейший список дел с таймером и календарем
+### IvTimer
+An application with a timer, calendar and a task list. With save mode.
+The latest stable version.
