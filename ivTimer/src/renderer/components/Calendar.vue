@@ -109,8 +109,8 @@ export default {
 <template>
   <div class="calendar">
     <h2 class="calendar__caption">
-      <span class="l">{{ namesMonth[month].ru }}</span>
-      <span class="">{{ year }}</span>
+      <span>{{ namesMonth[month].ru }}</span>
+      <span>{{ year }}</span>
     </h2>
     <table class="calendar__table">
       <tbody>
