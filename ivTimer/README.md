@@ -1,8 +1,11 @@
 # vue-electron-app
 
-> My vue electron js test
+My first vue.js & electron.js application
 
-my simple calendar & task list
+* my simple calendar
+* tasks list
+* saved data to file
+* current time 
 
 <div align="center" style="display: flex">
   <img alt="screen-index" src=".github/screen-index.png">

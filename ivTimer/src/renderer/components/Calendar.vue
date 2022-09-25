@@ -99,6 +99,9 @@ export default {
           return 'calendar__day-month'
         }
       }
+    },
+    toDay (day, month, year) {
+      if (+day >= this.current.day && +month >= this.current.month && +year >= this.year) { this.$router.push(`/add?day=${day}&month=${month}&year=${year}`) }
     }
   },
   mounted () {
@@ -109,8 +112,8 @@ export default {
 <template>
   <div class="calendar">
     <h2 class="calendar__caption">
-      <span class="l">{{ namesMonth[month].ru }}</span>
-      <span class="">{{ year }}</span>
+      <span>{{ namesMonth[month].ru }}</span>
+      <span>{{ year }}</span>
     </h2>
     <table class="calendar__table">
       <tbody>
@@ -120,7 +123,7 @@ export default {
           </th>
         </tr>
         <tr v-for="(dwa, k1) in dayArray" :key="k1 * 100" class="calendar__table-row">
-          <td v-for="(d, k2) in dwa" :key="d + k2 * 100" class="calendar__table-cell" :class="displayCells(d)">
+          <td v-for="(d, k2) in dwa" :key="d + k2 * 100" class="calendar__table-cell" :class="displayCells(d)" @click="toDay(d.day, month + 1, year)">
             {{ d.day }}
           </td>
         </tr>

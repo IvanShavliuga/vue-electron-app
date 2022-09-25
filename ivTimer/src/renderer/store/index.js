@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import { createLocalStore } from '@/utils/local-store'
+import { createLocalStore } from '../utils/local-store.js'
 // import { ipcRenderer } from 'electron'
 
 import { createPersistedState, createSharedMutations } from 'vuex-electron'
 
-// const localStore = createLocalStore()
+const localStore = createLocalStore()
 
 const validateDate = (obj) => {
   for (let period of ['second', 'minute', 'hour', 'day', 'month', 'year']) {
@@ -65,31 +65,43 @@ export default new Vuex.Store({
   mutations: {
     INIT_TASK (state, initial) {
       initial.done = false
-      state.tasksList = [{ ...validateDate(initial) }]
+      const getList = localStore.get('list')
+      if (getList) {
+        state.tasksList = getList
+      } else {
+        state.tasksList = [{ ...validateDate(initial) }]
+        localStore.set('list', state.tasksList)
+      }
+      const getOpt = localStore.get('options')
+      if (getOpt) {
+        state.options = getOpt
+      } else {
+        localStore.set('list', state.tasksList)
+      }
     },
     ADD_TASK (state, task) {
       task.done = false
       state.tasksList.push({ ...validateDate(task) })
-      // localStore.set('tasksList', JSON.stringify(state.tasksList))
+      localStore.set('list', state.tasksList)
     },
     CHANGE_TASK (state, task) {
       const idFind = state.tasksList.findIndex(el => el.id === task.id)
       state.tasksList[idFind] = { ...validateDate(task) }
-      // localStore.set('tasksList', JSON.stringify(state.tasksList))
+      localStore.set('list', state.tasksList)
     },
     SET_TASKDONE (state, id) {
       const idFind = state.tasksList.findIndex(el => el.id === id)
       state.tasksList[idFind].done = true
+      localStore.set('list', state.tasksList)
     },
     DELETE_TASK (state, id) {
       const idFind = state.tasksList.findIndex(el => el.id === +id)
       state.tasksList.splice(idFind, 1)
-      // localStore.set('tasksList', JSON.stringify(state.tasksList))
+      localStore.set('list', state.tasksList)
     },
     SET_OPTIONS (state, options) {
       state.options = options
-      // localStore.set('options', JSON.stringify(options))
-      // ipcRenderer.send('toggle-alwaysOnTop', !options.alwaysOnTop)
+      localStore.set('list', state.options)
     }
   },
   actions: {

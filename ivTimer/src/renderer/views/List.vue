@@ -1,11 +1,13 @@
 <template>
-    <main class="list">
+    <main class="list">\
+      <template v-if="tasks.length">
         <task v-for="(p,k) in pages" :key="k" :task="tasks[p]" @delete-task="deleteClick" @edit-task="editClick"></task>
-        <p v-if="tasks.length > 3" class="list__control">
-          <button class="list__button" @click="prev">Назад</button>
-          <span class="list__counters">{{ currentPage + 1 }} / {{ tasks.length }}</span>
-          <button class="list__button" @click="next">Вперед</button>
-        </p>
+      </template>
+      <p v-if="tasks.length > 3" class="list__control">
+        <button class="list__button" @click="prev">Назад</button>
+        <span class="list__counters">{{ currentPage + 1 }} / {{ tasks.length }}</span>
+        <button class="list__button" @click="next">Вперед</button>
+      </p>
     </main>
 </template>
 <style lang="scss" scoped>

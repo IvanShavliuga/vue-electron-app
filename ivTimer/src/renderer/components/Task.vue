@@ -2,7 +2,7 @@
 export default {
   props: {
     task: {
-      type: [Object, undefined]
+      type: [Object]
     }
   },
   methods: {

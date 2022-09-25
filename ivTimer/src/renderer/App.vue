@@ -33,7 +33,6 @@
   import { ipcRenderer } from 'electron'
   const path = require('path')
   export default {
-    name: 'vue-electron-app',
     data () {
       return {
         isTray: false,
