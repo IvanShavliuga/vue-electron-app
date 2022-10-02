@@ -1,5 +1,5 @@
 <template>
-    <main class="list">\
+    <main class="list">
       <template v-if="tasks.length">
         <task v-for="(p,k) in pages" :key="k" :task="tasks[p]" @delete-task="deleteClick" @edit-task="editClick"></task>
       </template>
@@ -17,7 +17,7 @@
         width: 60px;
         color: yellow;
         background-color: transparent;
-        padding: 3px 0;
+        padding: 0;
         border: none;
         outline: none;
     }
