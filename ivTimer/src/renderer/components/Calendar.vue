@@ -56,7 +56,7 @@ export default {
       const startDayWeek = (new Date(y, m).getDay() || 7) - 1
       let daysInWeek = []
       const daysMonth = this.dCount[m]
-      const daysMonthPrev = this.dCount[m - 1]
+      const daysMonthPrev = this.dCount[m > 0 ? m - 1 : 11]
       let d = 1
       let dw = 0
       daysInWeek.length = 7
@@ -74,7 +74,7 @@ export default {
       this.dayArray.push(daysInWeek)
       dw = 0
       let endd = 1
-      while (d < daysMonth) {
+      while (d <= daysMonth) {
         daysInWeek = []
         for (dw = 0; dw < 7; dw++) {
           if (d > daysMonth) {
@@ -89,7 +89,7 @@ export default {
       }
     },
     displayCells (d) {
-      if (this.current.day === d.day) {
+      if (this.current.day === d.day && d.currmonth) {
         return 'calendar__day-current'
       } else {
         if (!d.currmonth) {
@@ -102,6 +102,30 @@ export default {
     },
     toDay (day, month, year) {
       if (+day >= this.current.day && +month >= this.current.month && +year >= this.year) { this.$router.push(`/add?day=${day}&month=${month}&year=${year}`) }
+    },
+    prev () {
+      if (this.month > 0) {
+        this.month--
+        this.dayArray = []
+        this.calendar(this.year, this.month)
+      } else if (this.month === 0) {
+        this.month = 11
+        this.year--
+        this.dayArray = []
+        this.calendar(this.year, this.month)
+      }
+    },
+    next () {
+      if (this.month < 11) {
+        this.month++
+        this.dayArray = []
+        this.calendar(this.year, this.month)
+      } else if (this.month === 11) {
+        this.month = 0
+        this.year++
+        this.dayArray = []
+        this.calendar(this.year, this.month)
+      }
     }
   },
   mounted () {
@@ -112,8 +136,10 @@ export default {
 <template>
   <div class="calendar">
     <h2 class="calendar__caption">
+      <span class="calendar__caption-buttons" @click="prev">&lt;</span>
       <span>{{ namesMonth[month].ru }}</span>
       <span>{{ year }}</span>
+      <span class="calendar__caption-buttons" @click="next">&gt;</span>
     </h2>
     <table class="calendar__table">
       <tbody>
@@ -139,6 +165,12 @@ export default {
     color: white;
     font-weight: 700;
     text-align: center;
+    &-buttons {
+      color: yellow;
+      font-size: 25px;
+      font-weight: 900;
+      margin: 0 10px;
+    }
   }
   &__table {
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
