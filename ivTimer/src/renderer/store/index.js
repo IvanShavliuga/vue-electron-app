@@ -1,51 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { createLocalStore } from '../utils/local-store.js'
+import { createLocalTimer } from '../utils/local-timer.js'
 // import { ipcRenderer } from 'electron'
 
 import { createPersistedState, createSharedMutations } from 'vuex-electron'
 
 const localStore = createLocalStore()
-
-const validateDate = (obj) => {
-  for (let period of ['second', 'minute', 'hour', 'day', 'month', 'year']) {
-    obj[period] = +obj[period]
-    switch (period) {
-      case 'second':
-      case 'minute':
-        if (obj[period] > 59) obj[period] = 0
-        break
-      case 'hour':
-        if (obj[period] > 23) obj[period] = 0
-        break
-      case 'month':
-        if (obj[period] > 12) obj[period] = 0
-        break
-      case 'day':
-        switch (obj.month) {
-          case 2:
-            const vy = obj.year % 4 || (obj.year % 100 === 0 && obj.year % 400) ? 28 : 29
-            if (obj.day > vy) obj.day = 1
-            break
-          case 1:
-          case 3:
-          case 5:
-          case 7:
-          case 8:
-          case 10:
-          case 12:
-            if (obj.day > 31) obj.day = 1
-            break
-          default:
-            if (obj.day > 30) obj.day = 1
-            break
-        }
-        break
-    }
-  }
-  if (obj.id === undefined) obj.id = ~~(Math.random() * 100000)
-  return obj
-}
+const localTimer = createLocalTimer()
 
 Vue.use(Vuex)
 export default new Vuex.Store({
@@ -69,7 +31,7 @@ export default new Vuex.Store({
       if (getList) {
         state.tasksList = getList
       } else {
-        state.tasksList = [{ ...validateDate(initial) }]
+        state.tasksList = [{ ...localTimer.validateDate(initial) }]
         localStore.set('list', state.tasksList)
       }
       const getOpt = localStore.get('options')
@@ -81,12 +43,12 @@ export default new Vuex.Store({
     },
     ADD_TASK (state, task) {
       task.done = false
-      state.tasksList.push({ ...validateDate(task) })
+      state.tasksList.push({ ...localTimer.validateDate(task) })
       localStore.set('list', state.tasksList)
     },
     CHANGE_TASK (state, task) {
       const idFind = state.tasksList.findIndex(el => el.id === task.id)
-      state.tasksList[idFind] = { ...validateDate(task) }
+      state.tasksList[idFind] = { ...localTimer.validateDate(task) }
       localStore.set('list', state.tasksList)
     },
     SET_TASKDONE (state, id) {
@@ -123,18 +85,41 @@ export default new Vuex.Store({
     setTaskDone ({ commit }, id) {
       commit('SET_TASKDONE', id)
     }
+
   },
   getters: {
     tasksList (state) {
       return state.tasksList
     },
+    localTimer () {
+      return localTimer
+    },
+    currentDayList (state) {
+      return state.tasksList.filter((el) => {
+        return localTimer.equlDate({ day: el.day, month: el.month, year: el.year })
+      })
+    },
     doneDisplay (state) {
       if (!state.tasksList.length) return ''
       const doneLi = state.tasksList.filter((el) => el.done === true)
-      return `${doneLi.length} / ${state.tasksList.length}`
+      const currDay = state.tasksList.filter((el) => {
+        return localTimer.equlDate({ day: el.day, month: el.month, year: el.year })
+      })
+      return `${doneLi.length} / ${currDay.length}`
     },
     options (state) {
       return state.options
-    }
+    },
+    currentMonthList (state) {
+      return state.tasksList.filter((el) => {
+        return localTimer.equlMonth({ month: el.month, year: el.year })
+      })
+    },
+    currentMonthCount (state) {
+      return state.tasksList.filter((el) => {
+        return localTimer.equlMonth({ month: el.month, year: el.year })
+      }).length
+    },
+    totalTasksCount (state) { return state.tasksList.length }
   }
 })

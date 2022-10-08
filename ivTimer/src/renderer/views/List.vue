@@ -59,7 +59,7 @@ export default {
   },
   computed: {
     tasks () {
-      return this.$store.getters.tasksList
+      return this.$store.getters.currentDayList
     },
     pages () {
       return [this.currentPage, this.currentPage + 1, this.currentPage + 2]
