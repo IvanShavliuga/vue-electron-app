@@ -92,6 +92,11 @@ export default {
       if (this.current.day === d.day && d.currmonth) {
         return 'calendar__day-current'
       } else {
+        const list = this.$store.getters.tasksList.filter(({day, month, year}) => {
+          return d.day === day && this.month + 1 === month && year === this.year
+        })
+        console.log(this.month)
+        if (list.length) return 'calendar__day-task'
         if (!d.currmonth) {
           return 'calendar__day-prev'
         } else {
@@ -212,6 +217,10 @@ export default {
     }
     &-weekend {
       color: tomato;
+    }
+    &-task {
+      color: yellow;
+      background-color: rgba(15,12,200, 0.6);
     }
   }
 }

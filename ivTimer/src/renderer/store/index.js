@@ -85,10 +85,14 @@ export default new Vuex.Store({
     setTaskDone ({ commit }, id) {
       commit('SET_TASKDONE', id)
     }
+
   },
   getters: {
     tasksList (state) {
       return state.tasksList
+    },
+    localTimer () {
+      return localTimer
     },
     currentDayList (state) {
       return state.tasksList.filter((el) => {
