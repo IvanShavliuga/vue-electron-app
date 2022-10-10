@@ -41,6 +41,7 @@ export default {
   } 
   &__counters {
     color: white;
+    margin: 7px auto;
     span {
       color: yellow;
     }

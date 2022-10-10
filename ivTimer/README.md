@@ -1,11 +1,15 @@
 # vue-electron-app
 
-My first vue.js & electron.js application
+My first vue.js & electron.js application (Latest stable version, 0.5.0 )
 
 * my simple calendar
 * tasks list
 * saved data to file
 * current time 
+* pagination
+* set a task for another date
+* correct filtering of tasks in the calendar
+
 
 <div align="center" style="display: flex">
   <img alt="screen-index" src=".github/screen-index.png">

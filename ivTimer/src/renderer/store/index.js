@@ -101,11 +101,11 @@ export default new Vuex.Store({
     },
     doneDisplay (state) {
       if (!state.tasksList.length) return ''
-      const doneLi = state.tasksList.filter((el) => el.done === true)
       const currDay = state.tasksList.filter((el) => {
         return localTimer.equlDate({ day: el.day, month: el.month, year: el.year })
       })
-      return `${doneLi.length} / ${currDay.length}`
+      const doneLi = currDay.filter((el) => el.done === true)
+      return (currDay.length && doneLi.length) ? `${doneLi.length} / ${currDay.length}` : ''
     },
     options (state) {
       return state.options

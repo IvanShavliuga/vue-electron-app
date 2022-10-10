@@ -89,14 +89,15 @@ export default {
       }
     },
     displayCells (d) {
-      if (this.current.day === d.day && d.currmonth) {
+      if (this.current.day === d.day && this.current.month === this.month + 1) {
         return 'calendar__day-current'
       } else {
         const list = this.$store.getters.tasksList.filter(({day, month, year}) => {
           return d.day === day && this.month + 1 === month && year === this.year
         })
-        console.log(this.month)
-        if (list.length) return 'calendar__day-task'
+        if (list.length && d.currmonth) {
+          return 'calendar__day-task'
+        }
         if (!d.currmonth) {
           return 'calendar__day-prev'
         } else {
@@ -105,8 +106,17 @@ export default {
         }
       }
     },
-    toDay (day, month, year) {
-      if (+day >= this.current.day && +month >= this.current.month && +year >= this.year) { this.$router.push(`/add?day=${day}&month=${month}&year=${year}`) }
+    toDay (day, month, year, cls) {
+      if (cls === 'task') {
+        this.$router.push(`/list?day=${day}&month=${month}&year=${year}&nextday=false`)
+      }
+      if (+day >= this.current.day && +month >= this.current.month && +year >= this.year) {
+        if (cls === 'task') {
+          this.$router.push(`/list?day=${day}&month=${month}&year=${year}&nextday=true`)
+          return
+        }
+        this.$router.push(`/add?day=${day}&month=${month}&year=${year}`)
+      }
     },
     prev () {
       if (this.month > 0) {
@@ -154,7 +164,7 @@ export default {
           </th>
         </tr>
         <tr v-for="(dwa, k1) in dayArray" :key="k1 * 100" class="calendar__table-row">
-          <td v-for="(d, k2) in dwa" :key="d + k2 * 100" class="calendar__table-cell" :class="displayCells(d)" @click="toDay(d.day, month + 1, year)">
+          <td v-for="(d, k2) in dwa" :key="d + k2 * 100" class="calendar__table-cell" :class="displayCells(d)" @click="toDay(d.day, month + 1, year, displayCells(d).split('-')[1])">
             {{ d.day }}
           </td>
         </tr>
@@ -199,15 +209,17 @@ export default {
     &-cell {
       color: white;
       text-align: center;
+      cursor: default;
       &:nth-child(6), &:nth-child(7) {
         background-color: rgba(234,10,10, 0.1);
       }
     }
   }
-  &__day {
+  &__day { 
     &-current {
       color: yellow;
       background-color: rgba(234,234,10, 0.1);
+      cursor: pointer;
     }
     &-prev {
       color: silver;
@@ -221,6 +233,7 @@ export default {
     &-task {
       color: yellow;
       background-color: rgba(15,12,200, 0.6);
+      cursor: pointer;
     }
   }
 }
