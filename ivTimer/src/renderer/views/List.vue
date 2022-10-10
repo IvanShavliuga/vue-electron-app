@@ -1,7 +1,13 @@
 <template>
     <main class="list">
+      <p class="list__date" v-if="currentDateStr">Задачи на <span>{{ currentDateStr }}</span>
+        <span v-if="$route.query.nextday" @click="addClick">Добавить</span>
+      </p>
       <template v-if="tasks.length">
         <task v-for="(p,k) in pages" :key="k" :task="tasks[p]" @delete-task="deleteClick" @edit-task="editClick"></task>
+      </template>
+      <template v-else>
+        <p class="list__date">Нет задач на сегодня</p>
       </template>
       <p v-if="tasks.length > 3" class="list__control">
         <button class="list__button" @click="prev">Назад</button>
@@ -12,6 +18,17 @@
 </template>
 <style lang="scss" scoped>
 .list {
+    &__date {
+      text-align: center;
+      margin: 7px auto;
+      span {
+        color: yellow;
+        &:last-child {
+          font-weight: 800;
+          text-decoration: underline;
+        }
+      }
+    }
     &__button {
         display: block;
         width: 60px;
@@ -54,11 +71,17 @@ export default {
   },
   data () {
     return {
-      currentPage: 0
+      currentPage: 0,
+      currentDateStr: ''
     }
   },
   computed: {
     tasks () {
+      if (this.currentDateStr.length > 0) {
+        return this.$store.getters.tasksList.filter(({day, month, year}) => {
+          return +this.$route.query.day === day && +this.$route.query.month === month && year === +this.$route.query.year
+        })
+      }
       return this.$store.getters.currentDayList
     },
     pages () {
@@ -77,6 +100,16 @@ export default {
     },
     deleteClick (t) {
       this.$store.dispatch('deleteTask', t.id)
+    },
+    addClick () {
+      const {day, month, year} = this.$route.query
+      this.$router.push(`/add?day=${day}&month=${month}&year=${year}`)
+    }
+  },
+  mounted () {
+    if ('query' in this.$route) {
+      const {day, month, year} = this.$route.query
+      if (day && month && year) this.currentDateStr = `${day}.${month}.${year}`
     }
   }
 }
